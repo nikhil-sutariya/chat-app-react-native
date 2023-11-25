@@ -12,11 +12,14 @@ export const Nav = () => {
 				tabBarIndicatorStyle: {
 					backgroundColor: '#fff',
 				},
-				tabBarInactiveTintColor: '#7aa8a2',
+				tabBarInactiveTintColor: '#cccccc',
 				tabBarActiveTintColor: '#fff',
-				tabBarLabelStyle: { fontSize: 16, fontWeight: "bold" },
+				tabBarLabelStyle: { 
+					fontSize: 16,
+					fontFamily: 'JosefinSans-Medium' 
+				},
 				tabBarStyle: {
-					backgroundColor: '#008069',
+					backgroundColor: '#9f5914',
 				},
 		}}>
 			<Tab.Screen

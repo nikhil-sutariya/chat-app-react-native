@@ -55,6 +55,7 @@ export const CreateProfileScreen = (props) => {
             setLoading(true)
             const header = new Headers();
             header.append("Authorization", `Bearer ${props.route.params.accessToken}`);
+            header.append("Content-Type", "multipart/form-data")
 
             const formData = new FormData();
             formData.append('first_name', firstName)
@@ -91,10 +92,10 @@ export const CreateProfileScreen = (props) => {
                     "accessToken": props.route.params.accessToken,
                     "refreshToken": props.route.params.refreshToken
                 }
-                console.log("@@@@\n", details)
+                
                 setLoading(false);
                 login(details);
-                navigation.navigate("Home");
+                navigation.navigate("Root");
 			}
         }
     };
@@ -183,7 +184,8 @@ const styles = StyleSheet.create({
     loaderContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#fff'
     },
     container: {
         flex: 1,

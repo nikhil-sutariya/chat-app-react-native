@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         flex:1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundImage: 'linear-gradient(to bottom, #000, #0000ff)',
+        backgroundColor: '#fff'
     },
     textStyle: {
         color: '#000'

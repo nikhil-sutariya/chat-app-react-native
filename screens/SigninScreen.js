@@ -60,6 +60,19 @@ export const SigninScreen = () => {
                     navigation.navigate("CreateProfile", response_data)
                 }
                 else{
+					const details = {
+						"userId": response.data.data.id,
+						"firstName": response.data.data.first_name,
+						"lastName": response.data.data.last_name,
+						"email": response.data.data.email,
+						"phone": response.data.data.phone,
+						"image": response.data.data.profile_picture,
+						"isActive": response.data.data.is_active,
+						"accessToken": props.route.params.accessToken,
+						"refreshToken": props.route.params.refreshToken
+					}
+					login(details);
+
                     const delay = ms => new Promise(res => setTimeout(res, ms));
                     ToastAndroid.showWithGravityAndOffset(
                         response.data.message,
@@ -69,8 +82,9 @@ export const SigninScreen = () => {
                         50
                     );
                     await delay(2000);
-                    setLoading(false)
-                    navigation.navigate("Home")
+
+					setLoading(false);
+					navigation.navigate("Root")
                 }
 			}
             else{
@@ -131,7 +145,8 @@ const styles = StyleSheet.create({
 	loaderContainer: {
 		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		backgroundColor: '#fff'
 	},
 	container: {
 		flex: 1,
