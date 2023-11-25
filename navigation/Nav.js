@@ -15,8 +15,8 @@ export const Nav = () => {
 				tabBarInactiveTintColor: '#cccccc',
 				tabBarActiveTintColor: '#fff',
 				tabBarLabelStyle: { 
-					fontSize: 16,
-					fontFamily: 'JosefinSans-Medium' 
+					fontSize: 15,
+					fontFamily: 'JosefinSans-SemiBold' 
 				},
 				tabBarStyle: {
 					backgroundColor: '#9f5914',

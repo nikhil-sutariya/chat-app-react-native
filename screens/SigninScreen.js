@@ -38,7 +38,7 @@ export const SigninScreen = () => {
 			}
             
             const response = await useApi(
-                `users-api/v1/phone-register-login`,
+                `/users-api/v1/phone-register-login`,
                 "POST",
                 null,
                 formData

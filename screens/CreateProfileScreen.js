@@ -64,7 +64,7 @@ export const CreateProfileScreen = (props) => {
             formData.append('profile_picture', imageData)
 
             const response = await useApi(
-                `users-api/v1/user/${props.route.params.id}`,
+                `/users-api/v1/user/${props.route.params.id}`,
                 "PATCH",
                 header,
                 formData
