@@ -8,17 +8,16 @@ const useAuth = () => {
         let details = {
             userId: data.userId,
             email: data.email,
-            accessToken: data.accessToken,
             firstName: data.firstName,
             lastName: data.lastName,
             phone: data.phone,
-            isActive: data.is_active,
             userImage: data.image,
+            isActive: data.is_active,
+            accessToken: data.accessToken,
             refreshToken: data.refreshToken
           }
           await AsyncStorage.setItem('user_data', JSON.stringify(details));
-          await AsyncStorage.setItem('isInstall', "true")
-        }
+          }
 
     const logout = async () => {
         await AsyncStorage.removeItem('user_data');

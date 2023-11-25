@@ -5,7 +5,7 @@ import Navigation from "./navigation";
 export default function App() {
 	return (
 		<SafeAreaProvider>
-			<StatusBar backgroundColor={'#008069'} barStyle='dark-content' />
+			<StatusBar backgroundColor={'#9f5914'} barStyle='light-content' />
           	<Navigation />
 		</SafeAreaProvider>
 	)

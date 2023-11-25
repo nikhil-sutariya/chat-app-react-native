@@ -8,7 +8,6 @@ export const Nav = () => {
 	return (
 		<Tab.Navigator
 			tabBarPosition="top"
-			initialRouteName="Home"
 			screenOptions={{
 				tabBarIndicatorStyle: {
 					backgroundColor: '#fff',
