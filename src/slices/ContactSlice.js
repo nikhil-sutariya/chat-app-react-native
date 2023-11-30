@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getContactList } from "../actions/ContactListAction";
+import { resetContacts } from "../actions/ResetStateAction";
 
 const initialState= {
     contacts: [],
@@ -25,6 +26,12 @@ const contactSlice = createSlice({
             state.loading = false
             state.success = false
             state.error = action.payload 
+        })
+        .addCase(resetContacts, (state, action) => {
+            state.contacts = [],
+            state.loading = false
+            state.success = false
+            state.error = false
         })
     }
 });

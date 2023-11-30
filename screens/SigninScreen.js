@@ -26,7 +26,7 @@ export const SigninScreen = () => {
 
 	const logo = require('../assets/images/logo.png')
 
-	const submitHandler = async (data) => {
+	const submitHandler = async () => {
 		if (phone.length === 0) {
 			setPhoneError("Please enter your phone number");
 		}
@@ -67,9 +67,10 @@ export const SigninScreen = () => {
 						"email": response.data.data.email,
 						"phone": response.data.data.phone,
 						"image": response.data.data.profile_picture,
+						"bio": response.data.data.bio,
 						"isActive": response.data.data.is_active,
-						"accessToken": props.route.params.accessToken,
-						"refreshToken": props.route.params.refreshToken
+						"accessToken": response.data.data.accessToken,
+						"refreshToken": response.data.data.refreshToken
 					}
 					login(details);
 

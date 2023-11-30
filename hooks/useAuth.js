@@ -12,6 +12,7 @@ const useAuth = () => {
             lastName: data.lastName,
             phone: data.phone,
             userImage: data.image,
+            userBio: data.bio,
             isActive: data.is_active,
             accessToken: data.accessToken,
             refreshToken: data.refreshToken
@@ -21,7 +22,7 @@ const useAuth = () => {
 
     const logout = async () => {
         await AsyncStorage.removeItem('user_data');
-        navigation.navigate('Login')
+        navigation.navigate('Signin')
     }
 
     const userDetails = async () => {
