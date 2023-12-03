@@ -53,7 +53,7 @@ export const UsersScreen = () => {
                 <>
                     {contacts && contacts.length > 0 ? (
                         contacts.map((e, index) =>
-                            <TouchableHighlight key={index} underlayColor='#f2f2f2' style={styles.contactDetail} onPress={() => navigation.navigate("Chatroom", e, {name: `${e.first_name} ${e.last_name}`})} >
+                            <TouchableHighlight key={index} underlayColor='#f2f2f2' style={styles.contactDetail} onPress={() => navigation.navigate("Chatroom", e)} >
                                 <View style={{ flexDirection: "row" }}>
                                     <Image
                                         style={styles.image}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ActivityIndicator, Image, StyleSheet, Text, TextInput, ToastAndroid, TouchableHighlight, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, KeyboardAvoidingView, Image, StyleSheet, Text, TextInput, ToastAndroid, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { Dimensions } from 'react-native';
 import { launchImageLibrary } from "react-native-image-picker";
@@ -22,8 +22,8 @@ export const CreateProfileScreen = (props) => {
     const [loading, setLoading] = useState(false);
 
     const openImagePicker = () => {
-		launchImageLibrary({}, (response) => {
-			if (!response['didCancel']) {
+        launchImageLibrary({}, (response) => {
+            if (!response['didCancel']) {
                 const imgdata = {
                     uri: response.assets[0]['uri'],
                     type: response.assets[0]['type'],
@@ -31,9 +31,9 @@ export const CreateProfileScreen = (props) => {
                 }
                 setImage(response.assets[0]['uri'])
                 setImageData(imgdata)
-			}
-		})
-	}
+            }
+        })
+    }
 
     const submitHandler = async () => {
         if (firstName.length == 0 && lastName.length == 0 && email.length == 0) {
@@ -70,7 +70,7 @@ export const CreateProfileScreen = (props) => {
                 formData
             );
 
-            if(response.status === 200){
+            if (response.status === 200) {
                 const delay = ms => new Promise(res => setTimeout(res, ms));
                 ToastAndroid.showWithGravityAndOffset(
                     response.data.message,
@@ -92,11 +92,11 @@ export const CreateProfileScreen = (props) => {
                     "accessToken": props.route.params.accessToken,
                     "refreshToken": props.route.params.refreshToken
                 }
-                
+
                 setLoading(false);
                 login(details);
                 navigation.navigate("Root");
-			}
+            }
         }
     };
 
@@ -107,72 +107,77 @@ export const CreateProfileScreen = (props) => {
                     <ActivityIndicator size="large" color="#9f5914" />
                 </View>
             ) : (
-                <View style={styles.container}>
-                    <View style={{ paddingHorizontal: 8 }}>
-                        <View style={{ alignItems: 'center', justifyContent: 'center', marginVertical: 20}}>
-                            <TouchableOpacity onPress={openImagePicker}>
-                                <View style={styles.imagePicker}>
-                                    {image ?
-                                        <Image source={{ uri: image }} style={styles.uploadedImage} /> :
-                                        <Entypo name='plus' size={40} color={'#ccc'} />
-                                    }
-                                </View>
-                            </TouchableOpacity>
-                            <Text style={styles.inputLabel}>Select profile image</Text>
+                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                    style={{ flex: 1 }}
+                >
+
+                    <View style={styles.container}>
+                        <View style={{ paddingHorizontal: 8 }}>
+                            <View style={{ alignItems: 'center', justifyContent: 'center', marginVertical: 20 }}>
+                                <TouchableOpacity onPress={openImagePicker}>
+                                    <View style={styles.imagePicker}>
+                                        {image ?
+                                            <Image source={{ uri: image }} style={styles.uploadedImage} /> :
+                                            <Entypo name='plus' size={40} color={'#ccc'} />
+                                        }
+                                    </View>
+                                </TouchableOpacity>
+                                <Text style={styles.inputLabel}>Select profile image</Text>
+                            </View>
+                            <Text style={styles.inputLabel}>First Name</Text>
+                            <View style={styles.loginContainer} >
+                                <TextInput
+                                    style={fnameError ? styles.inputError : styles.input}
+                                    placeholder='eg. Nikhil'
+                                    onChangeText={(name) => { setFirstName(name), setfnameError(null) }}
+                                    placeholderTextColor={fnameError ? "red" : "#e99949"}
+                                    selectionColor='#27374D'
+                                />
+                            </View>
+                            {fnameError && (
+                                <Text style={styles.error}>
+                                    {fnameError}
+                                </Text>
+                            )}
+                            <Text style={styles.inputLabel}>Last Name</Text>
+                            <View style={styles.loginContainer} >
+                                <TextInput
+                                    style={lnameError ? styles.inputError : styles.input}
+                                    placeholder='eg. Sutariya'
+                                    onChangeText={(name) => { setLastName(name), setlnameError(null) }}
+                                    placeholderTextColor={lnameError ? "red" : "#e99949"}
+                                    selectionColor='#27374D'
+                                />
+                            </View>
+                            {lnameError && (
+                                <Text style={styles.error}>
+                                    {lnameError}
+                                </Text>
+                            )}
+                            <Text style={styles.inputLabel}>Email address</Text>
+                            <View style={styles.loginContainer} >
+                                <TextInput
+                                    style={emailError ? styles.inputError : styles.input}
+                                    autoCapitalize='none'
+                                    placeholder="e.g. fastchat@gmail.com"
+                                    onChangeText={(e) => { setEmail(e), setEmailError(null) }}
+                                    placeholderTextColor={emailError ? "red" : "#e99949"}
+                                    selectionColor='#27374D'
+                                />
+                            </View>
+                            {emailError && (
+                                <Text style={styles.error}>
+                                    {emailError}
+                                </Text>
+                            )}
                         </View>
-                        <Text style={styles.inputLabel}>First Name</Text>
-                        <View style={styles.loginContainer} >
-                            <TextInput 
-                                style={fnameError ? styles.inputError : styles.input} 
-                                placeholder='eg. Nikhil' 
-                                onChangeText={(name) => { setFirstName(name), setfnameError(null) }} 
-                                placeholderTextColor={fnameError ? "red" : "#e99949"}
-                                selectionColor='#27374D'
-                            />
+                        <View style={styles.bottomContainer}>
+                            <TouchableHighlight underlayColor='#884d11' style={styles.loginBtn} onPress={submitHandler}>
+                                <Text style={styles.loginText}>Signup</Text>
+                            </TouchableHighlight>
                         </View>
-                        {fnameError && (
-                            <Text style={styles.error}>
-                                {fnameError}
-                            </Text>
-                        )}
-                        <Text style={styles.inputLabel}>Last Name</Text>
-                        <View style={styles.loginContainer} >
-                            <TextInput 
-                                style={lnameError ? styles.inputError : styles.input} 
-                                placeholder='eg. Sutariya' 
-                                onChangeText={(name) => { setLastName(name), setlnameError(null) }} 
-                                placeholderTextColor={lnameError ? "red" : "#e99949"} 
-                                selectionColor='#27374D'    
-                            />
-                        </View>
-                        {lnameError && (
-                            <Text style={styles.error}>
-                                {lnameError}
-                            </Text>
-                        )}
-                        <Text style={styles.inputLabel}>Email address</Text>
-                        <View style={styles.loginContainer} >
-                            <TextInput
-								style={emailError ? styles.inputError : styles.input}
-								autoCapitalize='none'
-								placeholder="e.g. fastchat@gmail.com"
-								onChangeText={(e) => { setEmail(e), setEmailError(null) }}
-								placeholderTextColor={emailError ? "red" : "#e99949"}
-								selectionColor='#27374D'
-							/>
-                        </View>
-                        {emailError && (
-                            <Text style={styles.error}>
-                                {emailError}
-                            </Text>
-                        )}
                     </View>
-                    <View style={styles.bottomContainer}>
-                        <TouchableHighlight underlayColor='#884d11' style={styles.loginBtn} onPress={submitHandler}>
-                            <Text style={styles.loginText}>Signup</Text>
-                        </TouchableHighlight>
-                    </View>
-                </View>
+                </KeyboardAvoidingView>
             )}
         </>
     )
@@ -193,23 +198,23 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     imagePicker: {
-		backgroundColor: '#e6e6e6',
-		borderColor: '#e6e6e6',
-		borderWidth: 1,
-		borderRadius: 80,
-		width: 150,
-		height: 150,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	uploadedImage: {
-		backgroundColor: '#f2f2f2',
-		borderColor: '#f2f2f2',
-		borderWidth: 1,
-		borderRadius: 80,
-		width: 150,
-		height: 150,
-	},
+        backgroundColor: '#e6e6e6',
+        borderColor: '#e6e6e6',
+        borderWidth: 1,
+        borderRadius: 80,
+        width: 150,
+        height: 150,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    uploadedImage: {
+        backgroundColor: '#f2f2f2',
+        borderColor: '#f2f2f2',
+        borderWidth: 1,
+        borderRadius: 80,
+        width: 150,
+        height: 150,
+    },
     inputLabel: {
         marginTop: 8,
         marginBottom: -14,
@@ -245,13 +250,13 @@ const styles = StyleSheet.create({
         color: "#9f5914"
     },
     loginBtn: {
-		alignItems: "center",
-		justifyContent: "center",
-		paddingVertical: 13,
-		borderRadius: 50,
-		backgroundColor: '#9f5914',
-		fontFamily: 'JosefinSans-Regular'
-	},
+        alignItems: "center",
+        justifyContent: "center",
+        paddingVertical: 13,
+        borderRadius: 50,
+        backgroundColor: '#9f5914',
+        fontFamily: 'JosefinSans-Regular'
+    },
     loginText: {
         fontSize: 18,
         lineHeight: 22,

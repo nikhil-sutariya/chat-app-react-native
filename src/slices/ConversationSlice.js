@@ -9,7 +9,7 @@ const initialState= {
 }
 
 const conversationSlice = createSlice({
-    name: "contacts",
+    name: "conversations",
     initialState,
     reducers: {},
     extraReducers(build){
