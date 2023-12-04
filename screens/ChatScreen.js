@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Dimensions, TextInput, TouchableOpacity, Text, View, Image, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native'
+import { ActivityIndicator, TextInput, TouchableOpacity, Text, View, Image, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native'
 import { WS_URL } from '@env';
 import useAuth from '../hooks/useAuth';
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
-import { getConversationDetails } from "../src/actions/ConversationDetailsAction"
+import { getConversationDetails, receiveMessage } from "../src/actions/ConversationDetailsAction"
 
 const ChatScreen = ({ route, navigation }) => {
     const [ws, setWs] = useState(null);
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState(null);
     const [user, setUser] = useState(null);
-    
+
     const { userDetails } = useAuth()
     const dispatch = useDispatch()
     const isFocused = useIsFocused()
@@ -34,23 +34,31 @@ const ChatScreen = ({ route, navigation }) => {
         const user = await userDetails()
         setUser(user)
         dispatch(getConversationDetails(user.accessToken))
-        const socket = new WebSocket(`${WS_URL}/chat/${user.phone}-${route.params.phone}?token=${user.accessToken}`);
+        if('receiver' in route.params){
+            var phone = route.params.receiver.phone
+        }
+        else {
+            var phone = route.params.phone
+        }
+
+        const socket = new WebSocket(`${WS_URL}/chat/${user.phone}-${phone}?token=${user.accessToken}`);
 
         socket.onopen = () => {
-            console.log("Connction successfull.")
+            // console.log("Connction successfull.")
             setWs(socket);
         };
 
         socket.onmessage = e => {
-            console.log(e.data);
+            const data = JSON.parse(e.data)
+            dispatch(receiveMessage(data.message))
         };
 
         socket.onerror = e => {
-            console.log(e.message);
+            console.log('from onerror - ', e.message);
         };
 
         socket.onclose = e => {
-            console.log(e.code, e.reason);
+            console.log('from onclose - ', e.code, e.reason);
         };
         setLoading(false)
     }
@@ -71,7 +79,7 @@ const ChatScreen = ({ route, navigation }) => {
     }, [isFocused])
 
     return (
-        <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: '#fff' }} keyboardShouldPersistTaps="handled">
+        <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor: '#fcf2e8' }} keyboardShouldPersistTaps="handled">
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
                 <View style={styles.container}>
                     {loading ? (
@@ -80,9 +88,13 @@ const ChatScreen = ({ route, navigation }) => {
                         </View>
                     ) : (
                         <View style={styles.contentContainer}>
-                            {messages.map((e, index) => 
-                                <View key={index} 
-                                    style={[styles.messageContainer, e.sender.id === user.userId ? styles.senderMessage : styles.receiverMessage]}>
+                            {messages.map((e, index) =>
+                                <View key={index} style={[
+                                        styles.messageContainer, 
+                                        e.sender.id === user.userId ? styles.senderMessage : styles.receiverMessage,
+                                        { width: e.message.length * 8 }
+                                    ]}>
+                                    <View style={e.sender.id === user.userId ? styles.leftMessageArrow : styles.rightMessageArrow}></View>
                                     <Text style={styles.messageText}>{e.message}</Text>
                                 </View>
                             )}
@@ -126,30 +138,68 @@ const styles = StyleSheet.create({
     loaderContainer: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#fff'
+        backgroundColor: '#fcf2e8'
     },
     contentContainer: {
-
+        paddingHorizontal: 5
     },
     messageContainer: {
-        width: 200,
-        // borderTopStartRadius: 1,
-        // borderTopEndRadius: 7,
-        // borderBottomEndRadius: 7,
-        // marginStart: 10
+        marginVertical: 7
+    },
+    leftMessageArrow: {
+        display: 'flex',
+        alignSelf: 'flex-end',
+        left: 6,
+        width: 0,
+        height: 0,
+        borderStyle: 'solid',
+        overflow: 'hidden',
+        borderTopWidth: 7,
+        borderRightWidth: 9,
+        borderBottomWidth: 0,
+        borderLeftWidth: 0,
+        borderTopColor: '#f7d9bb',
+        borderRightColor: 'transparent',
+        borderBottomColor: 'transparent',
+        borderLeftColor: 'transparent'
+    },
+    rightMessageArrow: {
+        display: 'flex',
+        alignSelf: 'flex-start',
+        width: 0,
+        height: 0,
+        left: -6,
+        borderStyle: 'solid',
+        overflow: 'hidden',
+        borderTopWidth: 7,
+        borderRightWidth: 0,
+        borderBottomWidth: 0,
+        borderLeftWidth: 9,
+        borderTopColor: '#f7d9bb',
+        borderRightColor: 'transparent',
+        borderBottomColor: 'transparent',
+        borderLeftColor: 'transparent'
     },
     senderMessage: {
         alignSelf: 'flex-end',
-        backgroundColor: '#DCF8C6',
-        marginEnd: 5
+        backgroundColor: '#f7d9bb',
+        marginEnd: 10,
+        borderRadius: 4,
+        margin: 2
     },
     receiverMessage: {
         alignSelf: 'flex-start',
-        backgroundColor: '#DCF8C6',
-        marginStart: 5
+        backgroundColor: '#f7d9bb',
+        marginStart: 10,
+        borderRadius: 4,
+        margin: 2
     },
     messageText: {
-        color: '#000'
+        color: '#442608',
+        fontFamily: 'JosefinSans-Regular',
+        paddingHorizontal: 7,
+        paddingVertical: 2,
+        top: -3
     },
     container: {
         flex: 1

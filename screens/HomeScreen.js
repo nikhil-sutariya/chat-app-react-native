@@ -47,7 +47,7 @@ export const HomeScreen = () => {
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
             {loading ? (
                 <View style={styles.loaderContainer}>
-                    <ActivityIndicator size="large" color="#9f5914" />
+                    <ActivityIndicator size="large" color="#fff" />
                 </View>
             ) : (
                 <>
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff'
+        backgroundColor: '#fcf2e8'
     },
     container: {
         flex: 1,

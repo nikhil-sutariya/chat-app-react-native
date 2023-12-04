@@ -190,12 +190,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff'
+        backgroundColor: '#fcf2e8'
     },
     container: {
         flex: 1,
         paddingHorizontal: 15,
-        backgroundColor: '#fff'
+        backgroundColor: '#fcf2e8'
     },
     imagePicker: {
         backgroundColor: '#e6e6e6',
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         lineHeight: 22,
         letterSpacing: 0.5,
-        color: "#ffffff",
+        color: "#fcf2e8",
         fontFamily: 'JosefinSans-Medium'
     },
     bottomContainer: {

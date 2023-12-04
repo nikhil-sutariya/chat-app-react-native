@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getConversationDetails } from "../actions/ConversationDetailsAction";
+import { getConversationDetails, receiveMessage } from "../actions/ConversationDetailsAction";
+import { resetConversationDetails } from "../actions/ResetStateAction";
 
 const initialState= {
     messages: [],
@@ -25,6 +26,15 @@ const conversationDetailsSlice = createSlice({
             state.loading = false
             state.success = false
             state.error = action.payload 
+        })
+        .addCase(receiveMessage, (state, action) => {
+            state.messages = [...state.messages, action.payload];
+        })
+        .addCase(resetConversationDetails, (state, action) => {
+            state.messages = []
+            state.loading = false
+            state.success = false
+            state.error = false
         })
     }
 });

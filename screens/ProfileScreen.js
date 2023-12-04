@@ -5,7 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import useAuth from '../hooks/useAuth';
 import { useDispatch } from 'react-redux';
-import { resetContacts } from "../src/actions/ResetStateAction"
+import { resetContacts, resetConversation, resetConversationDetails } from "../src/actions/ResetStateAction"
 
 export const ProfileScreen = () => {
 	const [loading, setLoading] = useState(true);
@@ -25,6 +25,8 @@ export const ProfileScreen = () => {
 		setLoading(true)
 		logout()
 		dispatch(resetContacts())
+		dispatch(resetConversation())
+		dispatch(resetConversationDetails())
 		setLoading(false)
 	}
 
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
 		color: "#808080"
 	},
     accountMenus: {
-        backgroundColor: "#fff", 
+        backgroundColor: "#fcf2e8", 
         paddingHorizontal: 17, 
         paddingVertical: 17, 
         borderBottomColor: '#000000'

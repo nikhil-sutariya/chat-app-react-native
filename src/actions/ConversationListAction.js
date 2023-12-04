@@ -6,7 +6,7 @@ const baseUrl = BASE_URL
 
 export const getConversationList = createAsyncThunk('getConversations', async (params, { rejectWithValue }) => {
     try {
-        const { data } = await axios.get(`${baseUrl}/chat-app/v1/fetch-conversation`, {
+        const { data } = await axios.get(`${baseUrl}/chat-api/v1/fetch-conversation`, {
             headers: {"Authorization": `Bearer ${params}`}
         });
         return data;
